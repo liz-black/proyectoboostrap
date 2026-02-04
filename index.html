@@ -1,0 +1,1504 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portafolio Mágico</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Crimson Text', serif;
+      background: #000000;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+    
+    .main-wrapper {
+      width: 100%;
+      min-height: 100%;
+      overflow-y: auto;
+      padding: 2rem 0;
+    }
+    
+    .magical-border {
+      border: 2px solid #333333;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      background: rgba(20, 20, 20, 0.9);
+      backdrop-filter: blur(10px);
+    }
+    
+    .header-section {
+      text-align: center;
+      padding: 3rem 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      margin-bottom: 1rem;
+      letter-spacing: 3px;
+    }
+    
+    .welcome-text {
+      font-size: 1.3rem;
+      color: #cccccc;
+      font-style: italic;
+    }
+    
+    .course-card {
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      display: none; /* Ocultar por defecto para evitar que se vean al hacer scroll */
+    }
+    
+    .course-card.expanded {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 30px rgba(212, 175, 55, 0.5);
+    }
+    
+    .course-header {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      padding: 1.5rem;
+      border-bottom: 2px solid #444444;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .course-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0;
+    }
+    
+    .expand-icon {
+      font-size: 1.5rem;
+      color: #ffffff;
+      transition: transform 0.3s ease;
+    }
+    
+    .course-card.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+    
+    .course-content {
+      padding: 2rem;
+      display: none;
+    }
+    
+    .course-card.expanded .course-content {
+      display: block;
+    }
+    
+    .resource-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .resource-tab {
+      padding: 0.8rem 1.5rem;
+      background: rgba(50, 50, 50, 0.5);
+      border: 2px solid #444444;
+      border-radius: 8px;
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .resource-tab:hover {
+      background: rgba(80, 80, 80, 0.6);
+      border-color: #666666;
+    }
+    
+    .resource-tab.active {
+      background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+      color: #000000;
+      border-color: #ffffff;
+    }
+    
+    .resource-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .resource-content.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      background: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .video-box {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto 1rem;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    }
+    
+    .video-box video {
+      width: 100%;
+      height: auto;
+      max-height: 360px;
+      display: block;
+      background: #000;
+    }
+    
+    .video-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #2d1f3d 0%, #1a1438 100%);
+      color: #d4af37;
+      font-size: 1.2rem;
+    }
+    
+    .ppt-card, .ficha-card {
+      background: rgba(30, 30, 30, 0.8);
+      padding: 1.5rem;
+      border-radius: 10px;
+      border: 1px solid #444444;
+      margin-bottom: 1rem;
+      transition: background 0.3s ease;
+    }
+    
+    .ppt-card:hover, .ficha-card:hover {
+      background: rgba(50, 50, 50, 0.9);
+    }
+    
+    .ppt-title, .ficha-title {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .download-btn {
+      background: linear-gradient(135deg, #444444 0%, #333333 100%);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .download-btn:hover {
+      background: linear-gradient(135deg, #666666 0%, #555555 100%);
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+    
+    .evaluation-section {
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.9) 0%, rgba(50, 30, 50, 0.8) 100%);
+      padding: 2.5rem;
+      border-radius: 15px;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+    
+    .question {
+      margin-bottom: 2rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(40, 40, 40, 0.9) 0%, rgba(30, 30, 30, 0.9) 100%);
+      border-radius: 12px;
+      border-left: 5px solid #d4af37;
+      box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .question:hover {
+      transform: translateX(5px);
+      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
+    }
+    
+    .question-text {
+      color: #ffffff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      margin: 0.8rem 0;
+      background: rgba(60, 60, 60, 0.6);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .option::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .option:hover::before {
+      left: 100%;
+    }
+    
+    .option:hover {
+      background: rgba(80, 80, 80, 0.7);
+      border-color: #d4af37;
+      transform: translateX(10px);
+      box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+    }
+    
+    .option input[type="radio"] {
+      margin-right: 1rem;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      accent-color: #d4af37;
+    }
+    
+    .option span {
+      font-size: 1.05rem;
+      color: #ffffff;
+      font-weight: 500;
+    }
+    
+    .submit-btn {
+      background: linear-gradient(135deg, #d4af37 0%, #f4e4c1 100%);
+      color: #000000;
+      border: none;
+      padding: 1.2rem 3.5rem;
+      border-radius: 12px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1.5rem;
+      font-family: 'Cinzel', serif;
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    .submit-btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 35px rgba(212, 175, 55, 0.6);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+    
+    .submit-btn:disabled {
+      background: linear-gradient(135deg, #555555 0%, #444444 100%);
+      color: #888888;
+      cursor: not-allowed;
+      opacity: 0.5;
+      box-shadow: none;
+    }
+    
+    .result-message {
+      margin-top: 2rem;
+      padding: 2rem;
+      border-radius: 15px;
+      font-size: 1.3rem;
+      text-align: center;
+      display: none;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.5s ease;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .result-message.show {
+      display: block;
+    }
+    
+    .result-message.pass {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(56, 142, 60, 0.3) 100%);
+      border: 3px solid #4caf50;
+      color: #4caf50;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .result-message.fail {
+      background: linear-gradient(135deg, rgba(244, 67, 54, 0.3) 0%, rgba(211, 47, 47, 0.3) 100%);
+      border: 3px solid #f44336;
+      color: #f44336;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .final-exam-section {
+      margin-top: 3rem;
+      display: none; /* Ocultar por defecto */
+    }
+    
+    .final-exam-header {
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      border: 2px solid #ffffff;
+    }
+    
+    .final-exam-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      margin: 0;
+    }
+    
+    .login-section {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 3rem;
+      text-align: center;
+      background: rgba(20, 20, 20, 0.7) !important;
+      backdrop-filter: blur(15px);
+    }
+    
+    #loginScreen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+    }
+    
+    .login-form {
+      margin-top: 2rem;
+    }
+    
+    .form-label {
+      display: block;
+      color: #ffffff;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(50, 50, 50, 0.5);
+      border: 2px solid #444444;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-family: 'Crimson Text', serif;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #ffffff;
+      background: rgba(80, 80, 80, 0.5);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+    
+    .form-input::placeholder {
+      color: #888888;
+    }
+    
+    .masthead {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -2;
+    }
+    
+    .bg-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      opacity: 0.3;
+    }
+    
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #ffffff;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    
+    .class-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: rgba(30, 30, 30, 0.6);
+      border-radius: 10px;
+      border: 2px solid #444444;
+    }
+    
+    .class-section.locked {
+      opacity: 0.5;
+      pointer-events: none;
+      position: relative;
+    }
+    
+    .class-section.locked::after {
+      content: '🔒 Completa la clase anterior';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0, 0, 0.9);
+      color: #ffffff;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border: 2px solid #ffffff;
+    }
+    
+    .class-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .class-status {
+      font-size: 1.5rem;
+    }
+    
+    .area-card {
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(30, 30, 30, 0.8);
+    }
+    
+    .area-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 10px 40px rgba(255, 255, 255, 0.4);
+      background: rgba(50, 50, 50, 0.9);
+    }
+    
+    .area-card.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    .area-icon {
+      font-size: 5rem;
+      margin-bottom: 1.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .resource-content[data-course="2"]{
+     display: none;
+     }
+
+
+    .area-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+    
+    .area-description {
+      color: #cccccc;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+    
+    .back-btn {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      background: rgba(50, 50, 50, 0.8);
+      color: #ffffff;
+      border: 2px solid #666666;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      font-size: 1rem;
+    }
+    
+    .back-btn:hover {
+      background: rgba(80, 80, 80, 0.9);
+      transform: scale(1.05);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div class="stars" id="starsContainer"></div>
+  <header class="masthead">
+   <video autoplay muted loop playsinline class="bg-video"><source src="assets/img/video.mp4" type="video/mp4">
+   </video>
+  </header><!-- Login Screen -->
+  <div id="loginScreen" class="main-wrapper">
+   <div class="container">
+    <div class="magical-border login-section">
+     <h1 class="main-title">Mi Portafolio Académico</h1>
+     <p class="welcome-text">Por favor ingresa tu nombre para comenzar</p>
+     <form id="loginForm" class="login-form"><label for="studentName" class="form-label">Nombre del Alumno</label> <input type="text" id="studentName" class="form-input" placeholder="Escribe tu nombre completo" required> <button type="submit" class="submit-btn">Continuar</button>
+     </form>
+    </div>
+   </div>
+  </div><!-- Area Selection Screen -->
+  <div id="areaSelectionScreen" class="main-wrapper" style="display: none;">
+   <div class="container">
+    <div class="magical-border header-section">
+     <h1 class="main-title" id="portfolioTitleArea">Mi Portafolio Académico</h1>
+     <p class="welcome-text">Bienvenido, <span id="studentNameDisplayArea"></span></p>
+     <p style="color: #ffffff; font-size: 1.3rem; margin-top: 2rem;">Selecciona el área de estudio:</p>
+    </div>
+    <div class="row g-4 mt-3">
+     <div class="col-md-6">
+      <div class="magical-border area-card" onclick="selectArea('math')">
+       <div class="area-icon">
+        📐
+       </div>
+       <h3 class="area-title" id="areaSelectMath">Matemática</h3>
+       <p class="area-description">4 clases de números y operaciones</p>
+      </div>
+     </div>
+     <div class="col-md-6">
+      <div class="magical-border area-card" onclick="selectArea('comp')">
+       <div class="area-icon">
+        💻
+       </div>
+       <h3 class="area-title" id="areaSelectComp">Computación</h3>
+       <p class="area-description">4 clases de introducción a la computadora</p>
+      </div>
+     </div>
+     <div class="col-md-6 offset-md-3">
+      <div class="magical-border area-card disabled" id="finalExamCard" onclick="selectArea('final')">
+       <div class="area-icon">
+        🏆
+       </div>
+       <h3 class="area-title">Evaluación Final</h3>
+       <p class="area-description">Completa las 8 clases para desbloquear</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Main Content (Hidden initially) -->
+  <div id="mainContent" class="main-wrapper" style="display: none;"><button class="back-btn" onclick="backToAreaSelection()">← Volver a Áreas</button>
+   <div class="container">
+    <div class="magical-border header-section">
+     <h1 class="main-title" id="portfolioTitle">Mi Portafolio Académico</h1>
+     <p class="welcome-text">Bienvenido, <span id="studentNameDisplay"></span></p>
+    </div><!-- Course 1: Matemática -->
+    <div class="magical-border course-card" id="mathCourse" data-course="1" style="display: none;">
+     <div class="course-header">
+      <h2 class="course-title" id="courseOneTitle">Matemática</h2><i class="bi bi-chevron-down expand-icon"></i>
+     </div>
+     <div class="course-content"><!-- Clase 1: Números Enteros -->
+      <div class="class-section" id="math-class-1" data-class="math-1">
+       <div class="class-header">
+        <h4 style="color: #ffffff; margin: 0;">Clase 1: Números Enteros</h4><span class="class-status" id="status-math-1">⚪</span>
+       </div>
+       <div class="video-box">
+        <video controls><source src="assets/img/enteros.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+        </video>
+       </div>
+       <div style="margin-top: 1rem;"><a href="assets/ppt/enteros.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> PPT</a> <a href="assets/fichas/enteros.pdf" target="_blank" rel="noopener noreferrer" class="download-btn" style="margin-left: 0.5rem;"><i class="bi bi-download"></i> Ficha</a>
+       </div>
+       <div class="evaluation-section" style="margin-top: 1.5rem;">
+        <div class="question">
+         <div class="question-text">
+          1. ¿Qué son los números enteros?
+         </div><label class="option"> <input type="radio" name="q1-math-1" value="a"> <span>Solo números positivos</span> </label> <label class="option"> <input type="radio" name="q1-math-1" value="b"> <span>Números positivos, negativos y cero</span> </label> <label class="option"> <input type="radio" name="q1-math-1" value="c"> <span>Solo números con decimales</span> </label>
+        </div>
+        <div class="question">
+         <div class="question-text">
+          2. ¿Cuál es el resultado de -5 + 8?
+         </div><label class="option"> <input type="radio" name="q2-math-1" value="a"> <span>-13</span> </label> <label class="option"> <input type="radio" name="q2-math-1" value="b"> <span>3</span> </label> <label class="option"> <input type="radio" name="q2-math-1" value="c"> <span>13</span> </label>
+        </div><button class="submit-btn" onclick="evaluateClass('math', 1)">Enviar Retroalimentación</button>
+        <div class="result-message" id="result-math-1"></div>
+       </div>
+      </div><!-- Clase 2: Números Naturales -->
+      <div class="class-section locked" id="math-class-2" data-class="math-2">
+       <div class="class-header">
+        <h4 style="color: #ffffff; margin: 0;">Clase 2: Números Naturales</h4><span class="class-status" id="status-math-2">🔒</span>
+       </div>
+       <div class="video-box">
+        <video controls><source src="assets/img/naturales.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+        </video>
+       </div>
+       <div style="margin-top: 1rem;"><a href="assets/ppt/naturales.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> PPT</a> <a href="assets/fichas/naturales.pdf" target="_blank" rel="noopener noreferrer" class="download-btn" style="margin-left: 0.5rem;"><i class="bi bi-download"></i> Ficha</a>
+       </div>
+       <div class="evaluation-section" style="margin-top: 1.5rem;">
+        <div class="question">
+         <div class="question-text">
+          1. ¿Qué son los números naturales?
+         </div><label class="option"> <input type="radio" name="q1-math-2" value="a"> <span>Números para contar desde 1</span> </label> <label class="option"> <input type="radio" name="q1-math-2" value="b"> <span>Solo números negativos</span> </label> <label class="option"> <input type="radio" name="q1-math-2" value="c"> <span>Números con decimales</span> </label>
+        </div>
+        <div class="question">
+         <div class="question-text">
+          2. ¿Cuál es el resultado de 12 + 8?
+         </div><label class="option"> <input type="radio" name="q2-math-2" value="a"> <span>18</span> </label> <label class="option"> <input type="radio" name="q2-math-2" value="b"> <span>20</span> </label> <label class="option"> <input type="radio" name="q2-math-2" value="c"> <span>4</span> </label>
+        </div><button class="submit-btn" onclick="evaluateClass('math', 2)">Enviar Retroalimentación</button>
+        <div class="result-message" id="result-math-2"></div>
+       </div>
+      </div><!-- Clase 3: Multiplicación de Enteros -->
+      <div class="class-section locked" id="math-class-3" data-class="math-3">
+       <div class="class-header">
+        <h4 style="color: #ffffff; margin: 0;">Clase 3: Multiplicación de Enteros</h4><span class="class-status" id="status-math-3">🔒</span>
+       </div>
+       <div class="video-box">
+        <video controls><source src="assets/img/multi_div_enteros.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+        </video>
+       </div>
+       <div style="margin-top: 1rem;"><a href="assets/ppt/multi_div_enteros.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> PPT</a> <a href="assets/fichas/multi_div_enteros.pdf" target="_blank" rel="noopener noreferrer" class="download-btn" style="margin-left: 0.5rem;"><i class="bi bi-download"></i> Ficha</a>
+       </div>
+       <div class="evaluation-section" style="margin-top: 1.5rem;">
+        <div class="question">
+         <div class="question-text">
+          1. ¿Cuál es el resultado de -3 × 4?
+         </div><label class="option"> <input type="radio" name="q1-math-3" value="a"> <span>12</span> </label> <label class="option"> <input type="radio" name="q1-math-3" value="b"> <span>-12</span> </label> <label class="option"> <input type="radio" name="q1-math-3" value="c"> <span>7</span> </label>
+        </div>
+        <div class="question">
+         <div class="question-text">
+          2. ¿Cuál es el resultado de -6 × -2?
+         </div><label class="option"> <input type="radio" name="q2-math-3" value="a"> <span>-12</span> </label> <label class="option"> <input type="radio" name="q2-math-3" value="b"> <span>12</span> </label> <label class="option"> <input type="radio" name="q2-math-3" value="c"> <span>-8</span> </label>
+        </div><button class="submit-btn" onclick="evaluateClass('math', 3)">Enviar Retroalimentación</button>
+        <div class="result-message" id="result-math-3"></div>
+       </div>
+      </div><!-- Clase 4: Multiplicación - División Números Naturales -->
+      <div class="class-section locked" id="math-class-4" data-class="math-4">
+       <div class="class-header">
+        <h4 style="color: #ffffff; margin: 0;">Clase 4: Multiplicación - División Números Naturales</h4><span class="class-status" id="status-math-4">🔒</span>
+       </div>
+       <div class="video-box">
+        <video controls><source src="assets/img/multi_div_naturales.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+        </video>
+       </div>
+       <div style="margin-top: 1rem;"><a href="assets/ppt/multi_div_naturales.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> PPT</a> <a href="assets/fichas/multi_div_naturales.pdf" target="_blank" rel="noopener noreferrer" class="download-btn" style="margin-left: 0.5rem;"><i class="bi bi-download"></i> Ficha</a>
+       </div>
+       <div class="evaluation-section" style="margin-top: 1.5rem;">
+        <div class="question">
+         <div class="question-text">
+          1. ¿Cuál es el resultado de 15 ÷ 3?
+         </div><label class="option"> <input type="radio" name="q1-math-4" value="a"> <span>3</span> </label> <label class="option"> <input type="radio" name="q1-math-4" value="b"> <span>5</span> </label> <label class="option"> <input type="radio" name="q1-math-4" value="c"> <span>45</span> </label>
+        </div>
+        <div class="question">
+         <div class="question-text">
+          2. ¿Cuál es el resultado de 8 × 7?
+         </div><label class="option"> <input type="radio" name="q2-math-4" value="a"> <span>54</span> </label> <label class="option"> <input type="radio" name="q2-math-4" value="b"> <span>56</span> </label> <label class="option"> <input type="radio" name="q2-math-4" value="c"> <span>15</span> </label>
+        </div><button class="submit-btn" onclick="evaluateClass('math', 4)">Enviar Retroalimentación</button>
+        <div class="result-message" id="result-math-4"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="resource-content" data-resource="ppt" data-course="1">
+     <div class="ppt-card">
+      <div class="ppt-title">
+       📊 Clase 1: Números Enteros
+      </div>
+      <p style="color: #b8956a; margin-bottom: 1rem;">Presentación sobre números enteros</p><a href="assets/ppt/enteros.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Descargar PPT</a>
+     </div>
+     <div class="ppt-card">
+      <div class="ppt-title">
+       📊 Clase 2: Números Naturales
+     </div>
+     <div class="ppt-card">
+      <div class="ppt-title">
+       📊 Clase 3: Multiplicación de Enteros
+      </div>
+      <p style="color: #b8956a; margin-bottom: 1rem;">Multiplicación y división de enteros</p><a href="assets/ppt/multi_div_enteros.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Descargar PPT</a>
+     </div>
+     <div class="ppt-card">
+      <div class="ppt-title">
+       📊 Clase 4: Multiplicación - División Naturales
+      </div>
+      <p style="color: #b8956a; margin-bottom: 1rem;">Operaciones con números naturales</p><a href="assets/ppt/multi_div_naturales.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Descargar PPT</a>
+     </div>
+    </div>
+    <div class="resource-content" data-resource="fichas" data-course="1">
+     <div class="ficha-card">
+      <div class="ficha-title">
+       📋 Ficha 1: Números Enteros
+      </div>
+      <p style="color: #b8956a;">Ejercicios sobre números enteros</p><a href="assets/fichas/enteros.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Ver Ficha</a>
+     </div>
+     <div class="ficha-card">
+      <div class="ficha-title">
+       📋 Ficha 2: Números Naturales
+      </div>
+      <p style="color: #b8956a;">Ejercicios sobre números naturales</p><a href="assets/fichas/naturales.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Ver Ficha</a>
+     </div>
+     <div class="ficha-card">
+      <div class="ficha-title">
+       📋 Ficha 3: Multiplicación de Enteros
+      </div>
+      <p style="color: #b8956a;">Práctica de multiplicación y división</p><a href="assets/fichas/multi_div_enteros.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Ver Ficha</a>
+     </div>
+     <div class="ficha-card">
+      <div class="ficha-title">
+       📋 Ficha 4: Multiplicación - División Naturales
+      </div>
+      <p style="color: #b8956a;">Ejercicios de operaciones básicas</p><a href="assets/fichas/multi_div_naturales.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Ver Ficha</a>
+     </div>
+    </div>
+    <div class="resource-content" data-resource="eval" data-course="1">
+     <div class="evaluation-section">
+      <div class="question">
+       <div class="question-text">
+        1. ¿Qué son los números enteros?
+       </div><label class="option"> <input type="radio" name="q1c1" value="a"> <span>Solo números positivos</span> </label> <label class="option"> <input type="radio" name="q1c1" value="b"> <span>Números positivos, negativos y cero</span> </label> <label class="option"> <input type="radio" name="q1c1" value="c"> <span>Solo números con decimales</span> </label>
+      </div>
+      <div class="question">
+       <div class="question-text">
+        2. ¿Cuál es el resultado de -5 + 8?
+       </div><label class="option"> <input type="radio" name="q2c1" value="a"> <span>-13</span> </label> <label class="option"> <input type="radio" name="q2c1" value="b"> <span>3</span> </label> <label class="option"> <input type="radio" name="q2c1" value="c"> <span>13</span> </label>
+      </div><button class="submit-btn" onclick="evaluateCourse(1)">Enviar Respuestas</button>
+      <div class="result-message" id="result-1"></div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Course 2: Computación -->
+  <div class="magical-border course-card" id="compCourse" data-course="2" style="display: none;">
+   <div class="course-header">
+    <h2 class="course-title" id="courseTwoTitle">Computación</h2><i class="bi bi-chevron-down expand-icon"></i>
+   </div>
+   <div class="course-content"><!-- Clase 1: ¿Para qué sirven las computadoras? -->
+    <div class="class-section" id="comp-class-1" data-class="comp-1">
+     <div class="class-header">
+      <h4 style="color: #ffffff; margin: 0;">Clase 1: ¿Para qué sirven las computadoras?</h4><span class="class-status" id="status-comp-1">⚪</span>
+     </div>
+     <div class="video-box">
+      <video controls><source src="assets/img/5.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+      </video>
+     </div>
+     <div style="margin-top: 1rem;"><a href="assets/ppt/computadoras.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> PPT</a> <a href="assets/fichas/computadoras.pdf" target="_blank" rel="noopener noreferrer" class="download-btn" style="margin-left: 0.5rem;"><i class="bi bi-download"></i> Ficha</a>
+     </div>
+     <div class="evaluation-section" style="margin-top: 1.5rem;">
+      <div class="question">
+       <div class="question-text">
+        1. ¿Cuál es la función principal de una computadora?
+       </div><label class="option"> <input type="radio" name="q1-comp-1" value="a"> <span>Procesar información</span> </label> <label class="option"> <input type="radio" name="q1-comp-1" value="b"> <span>Solo jugar</span> </label> <label class="option"> <input type="radio" name="q1-comp-1" value="c"> <span>Ver películas</span> </label>
+      </div>
+      <div class="question">
+       <div class="question-text">
+        2. ¿Para qué NO se usan las computadoras?
+       </div><label class="option"> <input type="radio" name="q2-comp-1" value="a"> <span>Trabajar</span> </label> <label class="option"> <input type="radio" name="q2-comp-1" value="b"> <span>Cocinar pizza</span> </label> <label class="option"> <input type="radio" name="q2-comp-1" value="c"> <span>Estudiar</span> </label>
+      </div><button class="submit-btn" onclick="evaluateClass('comp', 1)">Enviar Retroalimentación</button>
+      <div class="result-message" id="result-comp-1"></div>
+     </div>
+    </div><!-- Clase 2: Partes de la computadora -->
+    <div class="class-section locked" id="comp-class-2" data-class="comp-2">
+     <div class="class-header">
+      <h4 style="color: #ffffff; margin: 0;">Clase 2: Partes de la computadora</h4><span class="class-status" id="status-comp-2">🔒</span>
+     </div>
+     <div class="video-box">
+      <video controls><source src="assets/img/6.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+      </video>
+     </div>
+     <div style="margin-top: 1rem;"><a href="assets/ppt/partes.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> PPT</a> <a href="assets/fichas/partes.pdf" target="_blank" rel="noopener noreferrer" class="download-btn" style="margin-left: 0.5rem;"><i class="bi bi-download"></i> Ficha</a>
+     </div>
+     <div class="evaluation-section" style="margin-top: 1.5rem;">
+      <div class="question">
+       <div class="question-text">
+        1. ¿Qué dispositivo se usa para escribir en la computadora?
+       </div><label class="option"> <input type="radio" name="q1-comp-2" value="a"> <span>Monitor</span> </label> <label class="option"> <input type="radio" name="q1-comp-2" value="b"> <span>Teclado</span> </label> <label class="option"> <input type="radio" name="q1-comp-2" value="c"> <span>Parlantes</span> </label>
+      </div>
+      <div class="question">
+       <div class="question-text">
+        2. ¿Qué parte de la computadora muestra la información visualmente?
+       </div><label class="option"> <input type="radio" name="q2-comp-2" value="a"> <span>Monitor</span> </label> <label class="option"> <input type="radio" name="q2-comp-2" value="b"> <span>Teclado</span> </label> <label class="option"> <input type="radio" name="q2-comp-2" value="c"> <span>Mouse</span> </label>
+      </div><button class="submit-btn" onclick="evaluateClass('comp', 2)">Enviar Retroalimentación</button>
+      <div class="result-message" id="result-comp-2"></div>
+     </div>
+    </div><!-- Clase 3: Encender la computadora y Paint -->
+    <div class="class-section locked" id="comp-class-3" data-class="comp-3">
+     <div class="class-header">
+      <h4 style="color: #ffffff; margin: 0;">Clase 3: Encender la computadora y Paint</h4><span class="class-status" id="status-comp-3">🔒</span>
+     </div>
+     <div class="video-box">
+      <video controls><source src="assets/img/7.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+      </video>
+     </div>
+     <div style="margin-top: 1rem;"><a href="assets/ppt/encender.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> PPT</a> <a href="assets/fichas/encender.pdf" target="_blank" rel="noopener noreferrer" class="download-btn" style="margin-left: 0.5rem;"><i class="bi bi-download"></i> Ficha</a>
+     </div>
+     <div class="evaluation-section" style="margin-top: 1.5rem;">
+      <div class="question">
+       <div class="question-text">
+        1. ¿Qué programa se usa para dibujar en la computadora?
+       </div><label class="option"> <input type="radio" name="q1-comp-3" value="a"> <span>Paint</span> </label> <label class="option"> <input type="radio" name="q1-comp-3" value="b"> <span>Calculadora</span> </label> <label class="option"> <input type="radio" name="q1-comp-3" value="c"> <span>Word</span> </label>
+      </div>
+      <div class="question">
+       <div class="question-text">
+        2. ¿Qué botón presionas para encender la computadora?
+       </div><label class="option"> <input type="radio" name="q2-comp-3" value="a"> <span>El botón de encendido</span> </label> <label class="option"> <input type="radio" name="q2-comp-3" value="b"> <span>El teclado</span> </label> <label class="option"> <input type="radio" name="q2-comp-3" value="c"> <span>El mouse</span> </label>
+      </div><button class="submit-btn" onclick="evaluateClass('comp', 3)">Enviar Retroalimentación</button>
+      <div class="result-message" id="result-comp-3"></div>
+     </div>
+    </div><!-- Clase 4: Herramientas de Paint -->
+    <div class="class-section locked" id="comp-class-4" data-class="comp-4">
+     <div class="class-header">
+      <h4 style="color: #ffffff; margin: 0;">Clase 4: Herramientas de Paint</h4><span class="class-status" id="status-comp-4">🔒</span>
+     </div>
+     <div class="video-box">
+      <video controls><source src="assets/img/8.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+      </video>
+     </div>
+     <div style="margin-top: 1rem;"><a href="assets/ppt/paint.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> PPT</a> <a href="assets/fichas/paint.pdf" target="_blank" rel="noopener noreferrer" class="download-btn" style="margin-left: 0.5rem;"><i class="bi bi-download"></i> Ficha</a>
+     </div>
+     <div class="evaluation-section" style="margin-top: 1.5rem;">
+      <div class="question">
+       <div class="question-text">
+        1. ¿Qué herramienta usas para pintar libremente en Paint?
+       </div><label class="option"> <input type="radio" name="q1-comp-4" value="a"> <span>Pincel</span> </label> <label class="option"> <input type="radio" name="q1-comp-4" value="b"> <span>Rectángulo</span> </label> <label class="option"> <input type="radio" name="q1-comp-4" value="c"> <span>Texto</span> </label>
+      </div>
+      <div class="question">
+       <div class="question-text">
+        2. ¿Qué herramienta usas para borrar en Paint?
+       </div><label class="option"> <input type="radio" name="q2-comp-4" value="a"> <span>Lápiz</span> </label> <label class="option"> <input type="radio" name="q2-comp-4" value="b"> <span>Borrador</span> </label> <label class="option"> <input type="radio" name="q2-comp-4" value="c"> <span>Relleno</span> </label>
+      </div><button class="submit-btn" onclick="evaluateClass('comp', 4)">Enviar Retroalimentación</button>
+      <div class="result-message" id="result-comp-4"></div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="resource-content active" data-resource="video" data-course="2">
+   <h4 style="color: #d4af37; margin-bottom: 1.5rem;">Clase 1: ¿Para qué sirven las computadoras?</h4>
+   <div class="video-box">
+    <video controls><source src="assets/img/5.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+    </video>
+   </div>
+   <h4 style="color: #d4af37; margin: 2rem 0 1.5rem;">Clase 2: Partes de la computadora</h4>
+   <div class="video-box">
+    <video controls><source src="assets/img/6.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+    </video>
+   </div>
+   <h4 style="color: #d4af37; margin: 2rem 0 1.5rem;">Clase 3: Encender la computadora y Paint</h4>
+   <div class="video-box">
+    <video controls><source src="assets/img/7.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+    </video>
+   </div>
+   <h4 style="color: #d4af37; margin: 2rem 0 1.5rem;">Clase 4: Herramientas de Paint</h4>
+   <div class="video-box">
+    <video controls><source src="assets/img/8.mp4" type="video/mp4"> Tu navegador no soporta videos HTML5
+    </video>
+   </div>
+  </div>
+  <div class="resource-content" data-resource="ppt" data-course="2">
+   <div class="ppt-card">
+    <div class="ppt-title">
+     📊 Clase 1: ¿Para qué sirven las computadoras?
+    </div>
+    <p style="color: #b8956a; margin-bottom: 1rem;">Introducción al uso de computadoras</p><a href="assets/ppt/computadoras.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Descargar PPT</a>
+   </div>
+   <div class="ppt-card">
+    <div class="ppt-title">
+     📊 Clase 2: Partes de la computadora
+    </div>
+    <p style="color: #b8956a; margin-bottom: 1rem;">Componentes del hardware</p><a href="assets/ppt/partes.pdf" target="_blank" rel="noopener">
+   </div>
+   <div class="ppt-card">
+    <div class="ppt-title">
+     📊 Clase 3: Encender la computadora y Paint
+    </div>
+    <p style="color: #b8956a; margin-bottom: 1rem;">Primeros pasos con Paint</p><a href="assets/ppt/encender.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Descargar PPT</a>
+   </div>
+   <div class="ppt-card">
+    <div class="ppt-title">
+     📊 Clase 4: Herramientas de Paint
+    </div>
+    <p style="color: #b8956a; margin-bottom: 1rem;">Explorar herramientas de dibujo</p><a href="assets/ppt/paint.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Descargar PPT</a>
+   </div>
+  </div>
+  <div class="resource-content" data-resource="fichas" data-course="2">
+   <div class="ficha-card">
+    <div class="ficha-title">
+     📋 Ficha 1: ¿Para qué sirven las computadoras?
+    </div>
+    <p style="color: #b8956a;">Ejercicios sobre el uso de computadoras</p><a href="assets/fichas/computadoras.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Ver Ficha</a>
+   </div>
+   <div class="ficha-card">
+    <div class="ficha-title">
+     📋 Ficha 2: Partes de la computadora
+    </div>
+    <p style="color: #b8956a;">Identificar componentes del hardware</p><a href="assets/fichas/partes.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Ver Ficha</a>
+   </div>
+   <div class="ficha-card">
+    <div class="ficha-title">
+     📋 Ficha 3: Encender y Paint
+    </div>
+    <p style="color: #b8956a;">Práctica con el programa Paint</p><a href="assets/fichas/encender.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Ver Ficha</a>
+   </div>
+   <div class="ficha-card">
+    <div class="ficha-title">
+     📋 Ficha 4: Herramientas de Paint
+    </div>
+    <p style="color: #b8956a;">Ejercicios prácticos de dibujo</p><a href="assets/fichas/paint.pdf" target="_blank" rel="noopener noreferrer" class="download-btn"><i class="bi bi-download"></i> Ver Ficha</a>
+   </div>
+  </div>
+  <div class="resource-content" data-resource="eval" data-course="2">
+   <div class="evaluation-section">
+    <div class="question">
+     <div class="question-text">
+      1. ¿Cuál es la función principal de una computadora?
+     </div><label class="option"> <input type="radio" name="q1c2" value="a"> <span>Procesar información</span> </label> <label class="option"> <input type="radio" name="q1c2" value="b"> <span>Solo jugar</span> </label> <label class="option"> <input type="radio" name="q1c2" value="c"> <span>Ver películas</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      2. ¿Qué dispositivo se usa para escribir en la computadora?
+     </div><label class="option"> <input type="radio" name="q2c2" value="a"> <span>Monitor</span> </label> <label class="option"> <input type="radio" name="q2c2" value="b"> <span>Teclado</span> </label> <label class="option"> <input type="radio" name="q2c2" value="c"> <span>Parlantes</span> </label>
+    </div><button class="submit-btn" onclick="evaluateCourse(2)">Enviar Respuestas</button>
+    <div class="result-message" id="result-2"></div>
+   </div>
+  </div> <!-- Final Exam -->
+  <div class="magical-border final-exam-section">
+   <div class="final-exam-header">
+    <h2 class="final-exam-title" id="finalExamTitle">Evaluación Final Integrada</h2>
+    <p style="color: #b8956a; margin: 1rem 0 0 0; font-size: 1.2rem;">Demuestra todo tu conocimiento</p>
+   </div>
+   <div class="evaluation-section">
+    <div class="question">
+     <div class="question-text">
+      1. ¿Qué son los números enteros?
+     </div><label class="option"> <input type="radio" name="qf1" value="a"> <span>Solo números positivos</span> </label> <label class="option"> <input type="radio" name="qf1" value="b"> <span>Números positivos, negativos y cero</span> </label> <label class="option"> <input type="radio" name="qf1" value="c"> <span>Solo números con decimales</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      2. ¿Cuál es el resultado de -3 × 4?
+     </div><label class="option"> <input type="radio" name="qf2" value="a"> <span>12</span> </label> <label class="option"> <input type="radio" name="qf2" value="b"> <span>-12</span> </label> <label class="option"> <input type="radio" name="qf2" value="c"> <span>7</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      3. ¿Cuál es el resultado de 15 ÷ 3?
+     </div><label class="option"> <input type="radio" name="qf3" value="a"> <span>3</span> </label> <label class="option"> <input type="radio" name="qf3" value="b"> <span>5</span> </label> <label class="option"> <input type="radio" name="qf3" value="c"> <span>45</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      4. ¿Cuál es el resultado de 8 × 7?
+     </div><label class="option"> <input type="radio" name="qf4" value="a"> <span>54</span> </label> <label class="option"> <input type="radio" name="qf4" value="b"> <span>56</span> </label> <label class="option"> <input type="radio" name="qf4" value="c"> <span>15</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      5. ¿Cuál es la función principal de una computadora?
+     </div><label class="option"> <input type="radio" name="qf5" value="a"> <span>Procesar información</span> </label> <label class="option"> <input type="radio" name="qf5" value="b"> <span>Solo jugar</span> </label> <label class="option"> <input type="radio" name="qf5" value="c"> <span>Ver películas</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      6. ¿Qué parte de la computadora muestra la información visualmente?
+     </div><label class="option"> <input type="radio" name="qf6" value="a"> <span>Monitor</span> </label> <label class="option"> <input type="radio" name="qf6" value="b"> <span>Teclado</span> </label> <label class="option"> <input type="radio" name="qf6" value="c"> <span>Mouse</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      7. ¿Qué dispositivo se usa para escribir en la computadora?
+     </div><label class="option"> <input type="radio" name="qf7" value="a"> <span>Monitor</span> </label> <label class="option"> <input type="radio" name="qf7" value="b"> <span>Teclado</span> </label> <label class="option"> <input type="radio" name="qf7" value="c"> <span>Parlantes</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      8. ¿Qué programa se usa para dibujar en la computadora?
+     </div><label class="option"> <input type="radio" name="qf8" value="a"> <span>Paint</span> </label> <label class="option"> <input type="radio" name="qf8" value="b"> <span>Calculadora</span> </label> <label class="option"> <input type="radio" name="qf8" value="c"> <span>Word</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      9. ¿Cuál es el resultado de -6 × -2?
+     </div><label class="option"> <input type="radio" name="qf9" value="a"> <span>-12</span> </label> <label class="option"> <input type="radio" name="qf9" value="b"> <span>12</span> </label> <label class="option"> <input type="radio" name="qf9" value="c"> <span>-8</span> </label>
+    </div>
+    <div class="question">
+     <div class="question-text">
+      10. ¿Qué herramienta usas para pintar libremente en Paint?
+     </div><label class="option"> <input type="radio" name="qf10" value="a"> <span>Pincel</span> </label> <label class="option"> <input type="radio" name="qf10" value="b"> <span>Rectángulo</span> </label> <label class="option"> <input type="radio" name="qf10" value="c"> <span>Texto</span> </label>
+    </div><button class="submit-btn" onclick="evaluateFinalExam()">Enviar Examen Final</button>
+    <div class="result-message" id="result-final"></div>
+   </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const defaultConfig = {
+      background_color: "#0f0c29",
+      surface_color: "#1a1438",
+      text_color: "#d4af37",
+      primary_action_color: "#8b7355",
+      secondary_action_color: "#b8956a",
+      font_family: "Crimson Text",
+      font_size: 16,
+      portfolio_title: "Mi Portafolio Académico",
+      welcome_text: "Bienvenido a tu portafolio de aprendizaje",
+      course_one_title: "Matemática",
+      course_two_title: "Computación",
+      final_exam_title: "Evaluación Final Integrada"
+    };
+
+    let studentName = "";
+    const config = window.elementSdk ? window.elementSdk.config : defaultConfig;
+    
+    // Progress tracking
+    const classProgress = {
+      'math-1': false,
+      'math-2': false,
+      'math-3': false,
+      'math-4': false,
+      'comp-1': false,
+      'comp-2': false,
+      'comp-3': false,
+      'comp-4': false
+    };
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'serif';
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.querySelector('.main-title').style.fontFamily = `Cinzel, ${customFont}, ${baseFontStack}`;
+      document.querySelector('.main-title').style.fontSize = `${baseSize * 2}px`;
+      
+      document.querySelectorAll('.course-title, .final-exam-title').forEach(el => {
+        el.style.fontFamily = `Cinzel, ${customFont}, ${baseFontStack}`;
+        el.style.fontSize = `${baseSize * 1.5}px`;
+      });
+      
+      document.querySelectorAll('.welcome-text').forEach(el => {
+        el.style.fontSize = `${baseSize * 1.1}px`;
+      });
+      
+      const bgGradient = `linear-gradient(135deg, ${config.background_color || defaultConfig.background_color} 0%, ${config.surface_color || defaultConfig.surface_color} 50%, #24243e 100%)`;
+      document.body.style.background = bgGradient;
+      
+      document.getElementById('portfolioTitle').textContent = config.portfolio_title || defaultConfig.portfolio_title;
+      const displayElement = document.getElementById('studentNameDisplay');
+      if (displayElement && studentName) {
+        displayElement.textContent = studentName;
+      }
+      document.getElementById('courseOneTitle').textContent = config.course_one_title || defaultConfig.course_one_title;
+      document.getElementById('courseTwoTitle').textContent = config.course_two_title || defaultConfig.course_two_title;
+      document.getElementById('finalExamTitle').textContent = config.final_exam_title || defaultConfig.final_exam_title;
+      document.getElementById('areaSelectMath').textContent = config.course_one_title || defaultConfig.course_one_title;
+      document.getElementById('areaSelectComp').textContent = config.course_two_title || defaultConfig.course_two_title;
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig: defaultConfig,
+        onConfigChange: onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["portfolio_title", config.portfolio_title || defaultConfig.portfolio_title],
+          ["welcome_text", config.welcome_text || defaultConfig.welcome_text],
+          ["course_one_title", config.course_one_title || defaultConfig.course_one_title],
+          ["course_two_title", config.course_two_title || defaultConfig.course_two_title],
+          ["final_exam_title", config.final_exam_title || defaultConfig.final_exam_title]
+        ])
+      });
+    }
+    
+    // Login functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nameInput = document.getElementById('studentName');
+        studentName = nameInput.value.trim();
+        
+        if (studentName) {
+          document.getElementById('loginScreen').style.display = 'none';
+          document.getElementById('areaSelectionScreen').style.display = 'block';
+          document.getElementById('studentNameDisplayArea').textContent = studentName;
+        }
+      });
+      createStars();
+      
+      document.querySelectorAll('.course-header').forEach(header => {
+        header.addEventListener('click', function() {
+          const card = this.closest('.course-card');
+          card.classList.toggle('expanded');
+        });
+      });
+      
+      document.querySelectorAll('.resource-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const course = this.dataset.course;
+          const resource = this.dataset.resource;
+          
+          document.querySelectorAll(`.resource-tab[data-course="${course}"]`).forEach(t => {
+            t.classList.remove('active');
+          });
+          this.classList.add('active');
+          
+          document.querySelectorAll(`.resource-content[data-course="${course}"]`).forEach(content => {
+            content.classList.remove('active');
+          });
+          document.querySelector(`.resource-content[data-resource="${resource}"][data-course="${course}"]`).classList.add('active');
+        });
+      });
+    });
+    
+    function selectArea(area) {
+      document.getElementById('areaSelectionScreen').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('studentNameDisplay').textContent = studentName;
+      
+      // Ocultar ambos cursos
+      // Ocultar ambos cursos primero
+      document.getElementById('mathCourse').style.display = 'none';
+      document.getElementById('compCourse').style.display = 'none';
+      document.getElementById('mathCourse').classList.remove('expanded');
+      document.getElementById('compCourse').classList.remove('expanded');
+      
+      if (area === 'math') {
+        document.getElementById('mathCourse').style.display = 'block';
+        document.getElementById('mathCourse').classList.add('expanded');
+      } else if (area === 'comp') {
+        document.getElementById('compCourse').style.display = 'block';
+        document.getElementById('compCourse').classList.add('expanded');
+      } else if (area === 'final') {
+        // Solo mostrar si todas las clases están completas
+        if (classProgress['math-4'] && classProgress['comp-4']) {
+          document.querySelector('.final-exam-section').style.display = 'block';
+        } else {
+          alert('Completa todas las clases antes de acceder a la Evaluación Final.');
+          return;
+        }
+      }
+      
+      // Ocultar examen final hasta que se complete todo
+      if (area !== 'final') {
+        document.querySelector('.final-exam-section').style.display = 'none';
+      }
+    }
+    
+    function backToAreaSelection() {
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('areaSelectionScreen').style.display = 'block';
+      
+      document.getElementById('mathCourse').classList.remove('expanded');
+      document.getElementById('compCourse').classList.remove('expanded');
+    }
+    
+    function evaluateClass(area, classNum) {
+      const correctAnswers = {
+        'math': {
+          1: { q1: 'b', q2: 'b' },
+          2: { q1: 'a', q2: 'b' },
+          3: { q1: 'b', q2: 'b' },
+          4: { q1: 'b', q2: 'b' }
+        },
+        'comp': {
+          1: { q1: 'a', q2: 'b' },
+          2: { q1: 'b', q2: 'a' },
+          3: { q1: 'a', q2: 'a' },
+          4: { q1: 'a', q2: 'b' }
+        }
+      };
+      
+      const q1Answer = document.querySelector(`input[name="q1-${area}-${classNum}"]:checked`);
+      const q2Answer = document.querySelector(`input[name="q2-${area}-${classNum}"]:checked`);
+      
+      if (!q1Answer || !q2Answer) {
+        const resultDiv = document.getElementById(`result-${area}-${classNum}`);
+        resultDiv.innerHTML = '⚠️ Por favor responde todas las preguntas';
+        resultDiv.className = 'result-message show fail';
+        return;
+      }
+      
+      const score = (q1Answer.value === correctAnswers[area][classNum].q1 ? 1 : 0) + 
+                    (q2Answer.value === correctAnswers[area][classNum].q2 ? 1 : 0);
+      
+      const resultDiv = document.getElementById(`result-${area}-${classNum}`);
+      if (score >= 1) {
+        // Aprobado
+        classProgress[`${area}-${classNum}`] = true;
+        document.getElementById(`status-${area}-${classNum}`).textContent = '✅';
+        
+        resultDiv.innerHTML = `🌟 ¡Excelente! Has aprobado con ${score}/2 respuestas correctas<br><small style="color: #d4af37;">La siguiente clase ha sido desbloqueada</small>`;
+        resultDiv.className = 'result-message show pass';
+        
+        // Desbloquear siguiente clase
+        if (classNum < 4) {
+          const nextClass = document.getElementById(`${area}-class-${classNum + 1}`);
+          if (nextClass) {
+            setTimeout(() => {
+              nextClass.classList.remove('locked');
+              document.getElementById(`status-${area}-${classNum + 1}`).textContent = '⚪';
+            }, 1000);
+          }
+        } else {
+          // Si completó la clase 4, verificar si debe habilitar examen final
+          checkFinalExamUnlock();
+        }
+      } else {
+        resultDiv.innerHTML = '⚡ Necesitas al menos 1 respuesta correcta para aprobar<br><small style="color: #f44336;">Intenta nuevamente</small>';
+        resultDiv.className = 'result-message show fail';
+      }
+    }
+    
+    function checkFinalExamUnlock() {
+      const mathComplete = classProgress['math-4'];
+      const compComplete = classProgress['comp-4'];
+      
+      if (mathComplete && compComplete) {
+        document.getElementById('finalExamCard').classList.remove('disabled');
+        const notification = document.createElement('div');
+        notification.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #d4af37, #f4e4c1); color: #000; padding: 2rem 3rem; border-radius: 15px; font-size: 1.5rem; font-weight: bold; z-index: 10000; box-shadow: 0 10px 50px rgba(212, 175, 55, 0.5); text-align: center;';
+        notification.innerHTML = '🎉 ¡FELICITACIONES!<br><small style="font-size: 1rem;">Has desbloqueado la Evaluación Final</small>';
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+      }
+    }
+    
+    function evaluateFinalExam() {
+      const correctAnswers = { 
+        qf1: 'b', qf2: 'b', qf3: 'b', qf4: 'b', qf5: 'a',
+        qf6: 'a', qf7: 'b', qf8: 'a', qf9: 'b', qf10: 'a'
+      };
+      let score = 0;
+      let allAnswered = true;
+      
+      for (let i = 1; i <= 10; i++) {
+        const answer = document.querySelector(`input[name="qf${i}"]:checked`);
+        if (!answer) {
+          allAnswered = false;
+          break;
+        }
+        if (answer.value === correctAnswers[`qf${i}`]) {
+          score++;
+        }
+      }
+      
+      const resultDiv = document.getElementById('result-final');
+      
+      if (!allAnswered) {
+        resultDiv.textContent = '⚠️ Por favor responde todas las 10 preguntas del examen';
+        resultDiv.className = 'result-message show fail';
+        return;
+      }
+      
+      const finalGrade = score * 2;
+      
+      if (finalGrade >= 11) {
+        resultDiv.innerHTML = `🏆 ¡EXTRAORDINARIO! Has obtenido ${score}/10 correctas<br><span style="font-size: 2rem; display: block; margin: 1rem 0;">NOTA FINAL: ${finalGrade}/20</span><button class="submit-btn" style="margin-top: 1rem;" onclick="downloadCertificate(${finalGrade})">📥 Descargar Certificado</button>`;
+        resultDiv.className = 'result-message show pass';
+      } else {
+        resultDiv.innerHTML = `⚡ DESAPROBADO. Has obtenido ${score}/10 correctas<br><span style="font-size: 2rem; display: block; margin: 1rem 0;">NOTA FINAL: ${finalGrade}/20</span><small style="color: #f44336;">Necesitas al menos 11 puntos para aprobar</small>`;
+        resultDiv.className = 'result-message show fail';
+      }
+    }
+    
+    function downloadCertificate() {
+      const date = new Date().toLocaleDateString('es-ES');
+      const certificateContent = `
+═════════════════════════════════════════════════════════
+               CERTIFICADO DE LOGRO
+═══════════════════════════════════════════════════════
+
+Se otorga el presente certificado a:
+
+              ${studentName}
+
+Por haber completado exitosamente el
+
+        PORTAFOLIO ACADÉMICO
+        
+Cursos completados:
+  ✓ Matemática
+  ✓ Computación
+
+Evaluación Final: APROBADA
+
+Fecha: ${date}
+
+═══════════════════════════════════════════════════════
+      `;
+      
+      const blob = new Blob([certificateContent], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Certificado_${studentName.replace(/\s+/g, '_')}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+    
+    function createStars() {
+      const container = document.getElementById('starsContainer');
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(star);
+      }
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c855229146f952a',t:'MTc3MDE1NzI4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
